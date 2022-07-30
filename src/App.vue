@@ -1,32 +1,42 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar app color="dark" dark>
+      <div class="d-flex align-center">
+        <v-img
+          alt="My Expense Logo"
+          class="shrink mr-2"
+          contain
+          src="./assets/expenses.png"
+          transition="scale-transition"
+          width="40"
+        />
+
+        <p class="text-h5 shrink mt-1 hidden-sm-and-down mt-4">My Expense</p>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn target="_blank" text>
+        <span class="mr-2">Logout</span>
+        <v-icon small>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+export default {
+  name: "App",
+  metaInfo: {
+    titleTemplate: "%s | My Expense",
+  },
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  data: () => ({
+    //
+  }),
+};
+</script>
