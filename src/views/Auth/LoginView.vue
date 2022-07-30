@@ -27,7 +27,7 @@
           outlined
           v-model="loginForm.password"
           class="mt-4"
-          :rules="[rules.required, rules.minLength10]"
+          :rules="[rules.required, rules.minLength8]"
           color="#272727"
           :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
           :type="passwordShow ? 'text' : 'password'"
@@ -52,8 +52,8 @@
     </v-card-text>
 
     <v-card-actions class="mt-5">
-      <v-btn color="dark lighten-2" text plain>
-        NEW uSER? Click to register
+      <v-btn color="dark lighten-2" to="/register" text plain>
+        NEW USER? CLICK TO REGISTER
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -61,6 +61,10 @@
 
 <script>
 export default {
+  name: "LoginView",
+  metaInfo: {
+    title: "Login",
+  },
   data() {
     return {
       passwordShow: "",
@@ -70,7 +74,7 @@ export default {
       },
       rules: {
         required: (value) => !!value || "Required",
-        minLength10: (value) =>
+        minLength8: (value) =>
           (value && value.length >= 8) ||
           "Value must have atleast 8 characters",
         email: (v) =>
