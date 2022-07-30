@@ -14,7 +14,9 @@
       <v-form ref="loginForm" class="mt-10 mx-5">
         <v-text-field
           color="#272727"
+          v-model="loginForm.email"
           outlined
+          :rules="[rules.required, rules.email]"
           label="Email"
           type="email"
           prepend-inner-icon="mdi-at"
@@ -23,7 +25,9 @@
 
         <v-text-field
           outlined
+          v-model="loginForm.password"
           class="mt-4"
+          :rules="[rules.required, rules.minLength10]"
           color="#272727"
           :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
           :type="passwordShow ? 'text' : 'password'"
@@ -35,9 +39,10 @@
 
         <v-btn
           block
+          @click="submitFormHandler"
           color="#272727"
           large
-          class="white--text"
+          class="white--text mt-4"
           elevation="2"
           data-test="login-button"
         >
@@ -59,7 +64,27 @@ export default {
   data() {
     return {
       passwordShow: "",
+      loginForm: {
+        email: "",
+        password: "",
+      },
+      rules: {
+        required: (value) => !!value || "Required",
+        minLength10: (value) =>
+          (value && value.length >= 8) ||
+          "Value must have atleast 8 characters",
+        email: (v) =>
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          "E-mail must be valid",
+      },
     };
+  },
+  methods: {
+    submitFormHandler() {
+      if (!this.$refs.loginForm.validate()) {
+        return;
+      }
+    },
   },
 };
 </script>
