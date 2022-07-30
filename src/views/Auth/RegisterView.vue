@@ -47,7 +47,7 @@
           color="#272727"
           :append-icon="confirmPasswordShow ? 'mdi-eye' : 'mdi-eye-off'"
           :type="confirmPasswordShow ? 'text' : 'password'"
-          label="Password"
+          label="Confirm password"
           prepend-inner-icon="mdi-lock"
           data-test="password-input"
           @click:append="confirmPasswordShow = !confirmPasswordShow"
@@ -62,7 +62,7 @@
           elevation="2"
           data-test="login-button"
         >
-          Login
+          Register
         </v-btn>
       </v-form>
     </v-card-text>

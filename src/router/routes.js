@@ -7,11 +7,6 @@ export default [
     component: HomeView,
   },
   {
-    path: "/about",
-    name: "about",
-    component: () => import("../views/AboutView.vue"),
-  },
-  {
     path: "/login",
     name: "login",
     component: () => import("../views/Auth/LoginView.vue"),

@@ -23,17 +23,22 @@
     </v-app-bar>
 
     <v-main>
+      <alert-notification></alert-notification>
+      <loading-spinner></loading-spinner>
       <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import AlertNotification from "@/components/global/AlertNotification.vue";
+import LoadingSpinner from "./components/global/LoadingSpinner.vue";
 export default {
   name: "App",
   metaInfo: {
     titleTemplate: "%s | My Expense",
   },
+  components: { AlertNotification, LoadingSpinner },
 
   data: () => ({
     //
