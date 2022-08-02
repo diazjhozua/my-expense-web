@@ -66,7 +66,7 @@ export default {
       window.$cookies
         .keys()
         .forEach((cookie) => window.$cookies.remove(cookie));
-      commit(SET_TOKEN, "burat");
+      commit(SET_TOKEN, null);
       commit(SET_USER, null);
       commit(SET_IS_AUTHENTICATED, false);
     },

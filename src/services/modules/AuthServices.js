@@ -12,6 +12,14 @@ export const login = async (payload) => {
   return token;
 };
 
+export const register = async (payload) => {
+  try {
+    await api("POST", `/auth/register`, payload);
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
 export const attempt = async () => {
   let data;
   try {
