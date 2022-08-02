@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "LoginView",
   metaInfo: {
@@ -84,16 +84,21 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState("auth", ["isAuthenticated"]),
+  },
   methods: {
     ...mapActions("auth", ["loginAction"]),
-    submitFormHandler() {
+    async submitFormHandler() {
       if (!this.$refs.loginForm.validate()) {
         return;
       }
 
-      this.loginAction(this.loginForm).then(() => {
-        console.log("tapos");
-      });
+      await this.loginAction(this.loginForm);
+
+      if (this.isAuthenticated) {
+        this.$router.push("/");
+      }
     },
   },
 };

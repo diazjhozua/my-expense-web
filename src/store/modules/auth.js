@@ -30,38 +30,46 @@ export default {
     async loginAction(_, userCreds) {
       const response = await login(userCreds);
 
-      console.log("response", response);
       return store.dispatch("auth/attemptAction", response);
     },
 
     async attemptAction({ commit }, token) {
-      if (token != "null" || !token) {
+      if (token != "null" && token) {
         commit(SET_TOKEN, token);
       } else {
+        window.$cookies
+          .keys()
+          .forEach((cookie) => window.$cookies.remove(cookie));
+
         return;
       }
 
-      axios.interceptors.request.use(function (config) {
-        config.headers.Authorization = `Bearer ${token}`;
-        return config;
-      });
-
       window.$cookies.set("token", token, "1h");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      try {
-        const response = await attempt(token);
+      const response = await attempt();
+
+      if (response) {
         commit(SET_USER, response);
         commit(SET_IS_AUTHENTICATED, true);
-      } catch (error) {
+      } else {
+        window.$cookies
+          .keys()
+          .forEach((cookie) => window.$cookies.remove(cookie));
         commit(SET_TOKEN, null);
         commit(SET_USER, null);
         commit(SET_IS_AUTHENTICATED, false);
       }
     },
-  },
-  getters: {
-    authenticated() {
-      false;
+    async logoutAction({ commit }) {
+      await attempt();
+      window.$cookies
+        .keys()
+        .forEach((cookie) => window.$cookies.remove(cookie));
+      commit(SET_TOKEN, "burat");
+      commit(SET_USER, null);
+      commit(SET_IS_AUTHENTICATED, false);
     },
   },
+  getters: {},
 };

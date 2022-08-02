@@ -1,25 +1,24 @@
-import axios from "axios";
+import { api } from "./httpCall";
 
 export const login = async (payload) => {
   let token;
 
   try {
-    const response = await axios.post(`/auth/login`, payload);
-    token = response.data.data;
+    const response = await api("POST", `/auth/login`, payload);
+    token = response.data;
   } catch (error) {
     //
   }
-
   return token;
 };
 
 export const attempt = async () => {
   let data;
   try {
-    const response = await axios.get(`/auth/me`);
-    data = response.data.data;
+    const response = await api("GET", `/auth/me`, {});
+    data = response.data;
   } catch (error) {
-    console.log("error", error);
+    //
   }
 
   return data;
