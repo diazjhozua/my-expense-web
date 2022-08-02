@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "LoginView",
   metaInfo: {
@@ -69,8 +70,8 @@ export default {
     return {
       passwordShow: "",
       loginForm: {
-        email: "",
-        password: "",
+        email: "sample@gmail2.com",
+        password: "motmot123",
       },
       rules: {
         required: (value) => !!value || "Required",
@@ -84,10 +85,15 @@ export default {
     };
   },
   methods: {
+    ...mapActions("auth", ["loginAction"]),
     submitFormHandler() {
       if (!this.$refs.loginForm.validate()) {
         return;
       }
+
+      this.loginAction(this.loginForm).then(() => {
+        console.log("tapos");
+      });
     },
   },
 };
