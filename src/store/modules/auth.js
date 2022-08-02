@@ -61,11 +61,12 @@ export default {
         commit(SET_IS_AUTHENTICATED, false);
       }
     },
-    async logoutAction({ commit }) {
-      await attempt();
+    logoutAction({ commit }) {
       window.$cookies
         .keys()
         .forEach((cookie) => window.$cookies.remove(cookie));
+
+      axios.defaults.headers.common["Authorization"] = null;
       commit(SET_TOKEN, null);
       commit(SET_USER, null);
       commit(SET_IS_AUTHENTICATED, false);

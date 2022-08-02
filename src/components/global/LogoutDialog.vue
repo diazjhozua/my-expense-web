@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions, mapState } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -57,37 +57,21 @@ export default {
       loading: false,
     };
   },
-  computed: {
-    ...mapState("auth", ["isAuthenticated"]),
-  },
+
   methods: {
-    ...mapMutations("alert", ["setAlert"]),
+    ...mapMutations("global", ["setAlert"]),
     ...mapActions("auth", ["logoutAction"]),
 
-    async signOutHandler() {
-      this.loader = "isLoading";
+    signOutHandler() {
+      this.logoutAction();
 
-      await this.logoutAction();
+      this.setAlert({
+        visible: true,
+        type: "success",
+        text: "Logout success",
+      });
 
-      this.loader = "";
-
-      if (this.isAuthenticated) {
-        this.setAlert({
-          visible: true,
-          type: "error",
-          text: "There was an error with the request",
-        });
-      } else {
-        this.dialog = false;
-
-        this.setAlert({
-          visible: true,
-          type: "success",
-          text: "Logout success",
-        });
-
-        this.$router.push("/login");
-      }
+      this.$router.push("/login");
     },
   },
   watch: {
