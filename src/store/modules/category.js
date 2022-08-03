@@ -6,7 +6,11 @@ export default {
   namespaced: true,
   state: {
     categories: [{}],
-    category: {},
+    category: {
+      name: null,
+      limit: null,
+    },
+
     categoryFormDialog: true,
     isEditing: false,
   },

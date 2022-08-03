@@ -5,45 +5,68 @@
         <span class="text-h5">{{ formText }}</span>
       </v-card-title>
 
-      <v-container class="px-10">
-        <v-text-field
-          dense
-          color="#272727"
-          outlined
-          label="Category"
-          type="text"
-        ></v-text-field>
+      <v-form ref="form">
+        <v-container class="px-10">
+          <v-text-field
+            v-model="name"
+            :rules="[rules.required, rules.minLength4]"
+            dense
+            color="#272727"
+            outlined
+            label="Category"
+            type="text"
+          ></v-text-field>
 
-        <v-text-field
-          dense
-          color="#272727"
-          outlined
-          hint="Limit is used when determining if you are exceeding your expense during a specified month."
-          persistent-hint
-          label="Limit"
-          type="number"
-        ></v-text-field>
-      </v-container>
+          <v-text-field
+            dense
+            v-model="limit"
+            :rules="[rules.required, rules.minValue1]"
+            color="#272727"
+            outlined
+            hint="Limit is used when determining if you are exceeding your expense during a specified month."
+            persistent-hint
+            label="Limit"
+            type="number"
+          ></v-text-field>
+        </v-container>
 
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="#272727" text plain @click="closeCategoryForm">
-          Cancel
-        </v-btn>
-        <v-btn color="#272727" class="white--text px-10"> Save </v-btn>
-      </v-card-actions>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#272727" text plain @click="closeCategoryForm">
+            Cancel
+          </v-btn>
+          <v-btn
+            color="#272727"
+            class="white--text px-10"
+            @click="submitFormHandler"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-form>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import { mapFields } from "vuex-map-fields";
 export default {
   data() {
-    return {};
+    return {
+      rules: {
+        required: (value) => !!value || "Required",
+        minLength4: (value) =>
+          (value && value.length >= 4) ||
+          "Value must have atleast 4 characters",
+        minValue1: (value) =>
+          (value && value > 0) || "Value must not be less than or equal to 0",
+      },
+    };
   },
   computed: {
     ...mapState("category", ["categoryFormDialog", "isEditing"]),
+    ...mapFields("category", ["category.name", "category.limit"]),
 
     formText() {
       if (this.editing) {
@@ -55,6 +78,11 @@ export default {
   },
   methods: {
     ...mapMutations("category", ["closeCategoryForm"]),
+    submitFormHandler() {
+      if (!this.$refs.form.validate()) {
+        return;
+      }
+    },
   },
 };
 </script>
