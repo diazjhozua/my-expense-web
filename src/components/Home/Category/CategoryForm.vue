@@ -19,7 +19,7 @@
 
           <v-text-field
             dense
-            v-model="limit"
+            v-model.number="limit"
             :rules="[rules.required, rules.minValue1]"
             color="#272727"
             outlined
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import { mapFields } from "vuex-map-fields";
 export default {
   data() {
@@ -78,9 +78,17 @@ export default {
   },
   methods: {
     ...mapMutations("category", ["closeCategoryForm"]),
-    submitFormHandler() {
+    ...mapActions("category", ["addCategoryAction"]),
+    async submitFormHandler() {
       if (!this.$refs.form.validate()) {
         return;
+      }
+
+      try {
+        await this.addCategoryAction();
+        this.closeCategoryForm();
+      } catch (error) {
+        //
       }
     },
   },

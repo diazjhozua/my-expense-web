@@ -11,3 +11,13 @@ export const fetchCategories = async () => {
   }
   return data;
 };
+
+export const addCategory = async (payload) => {
+  try {
+    const response = await api("POST", `/category`, payload);
+    return response.data;
+  } catch (error) {
+    console.log("error", error);
+    throw Error(error);
+  }
+};
