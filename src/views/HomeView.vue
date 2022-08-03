@@ -22,7 +22,7 @@
     </v-bottom-navigation>
 
     <v-responsive class="overflow-y-auto" max-height="600">
-      <v-responsive height="1500">
+      <v-responsive height="100%">
         <expense-list v-if="bottomNavigation == 0"></expense-list>
         <category-list v-if="bottomNavigation == 1"></category-list>
       </v-responsive>
@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      bottomNavigation: 0,
+      bottomNavigation: 1,
     };
   },
 };

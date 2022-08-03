@@ -1,5 +1,7 @@
 <template>
-  <div>Expenses</div>
+  <v-container>
+    <header>Expenses</header>
+  </v-container>
 </template>
 
 <script>
