@@ -3,7 +3,7 @@
     <div class="d-flex justfiy-space-between">
       <header class="text-h5">Category List</header>
       <v-spacer></v-spacer>
-      <v-btn class="white--text mb-3 px-10" color="#272727"
+      <v-btn @click="createItem" class="white--text mb-3 px-10" color="#272727"
         >Create <v-icon class="ml-3">mdi-clipboard-plus</v-icon></v-btn
       >
     </div>
@@ -44,11 +44,13 @@
         </template>
       </v-data-table>
     </v-card>
+    <category-form></category-form>
   </v-container>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import CategoryForm from "./CategoryForm.vue";
+import { mapState, mapActions, mapMutations } from "vuex";
 import { format, parseISO } from "date-fns";
 export default {
   data() {
@@ -66,6 +68,9 @@ export default {
       ],
     };
   },
+  components: {
+    CategoryForm,
+  },
   async created() {
     await this.getCategoriesAction();
   },
@@ -74,6 +79,11 @@ export default {
   },
   methods: {
     ...mapActions("category", ["getCategoriesAction"]),
+    ...mapMutations("category", ["openCategoryForm", "setIsEditing"]),
+    createItem() {
+      this.openCategoryForm();
+      this.setIsEditing(false);
+    },
   },
   filters: {
     ddMmmmYHhSsA: function (dateTime) {

@@ -1,15 +1,29 @@
 import { SET_CATEGORIES } from "@/shared/mutation/category-type";
 import { fetchCategories } from "@/services";
+import { getField, updateField } from "vuex-map-fields";
+
 export default {
   namespaced: true,
   state: {
-    categories: null,
-    category: null,
+    categories: [{}],
+    category: {},
+    categoryFormDialog: true,
+    isEditing: false,
   },
   mutations: {
     [SET_CATEGORIES](state, categories) {
       state.categories = categories;
     },
+    closeCategoryForm(state) {
+      state.categoryFormDialog = false;
+    },
+    openCategoryForm(state) {
+      state.categoryFormDialog = true;
+    },
+    setIsEditing(state, isEditing) {
+      state.isEditing = isEditing;
+    },
+    updateField,
   },
   actions: {
     async getCategoriesAction({ commit }) {
@@ -18,4 +32,5 @@ export default {
       commit(SET_CATEGORIES, response);
     },
   },
+  getters: { getField },
 };
