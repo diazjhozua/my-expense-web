@@ -16,27 +16,31 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn target="_blank" text>
-        <span class="mr-2">Logout</span>
-        <v-icon small>mdi-open-in-new</v-icon>
-      </v-btn>
+      <logout-dialog v-if="isAuthenticated"></logout-dialog>
     </v-app-bar>
 
     <v-main>
+      <alert-notification></alert-notification>
+      <loading-spinner></loading-spinner>
       <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import AlertNotification from "@/components/global/AlertNotification.vue";
+import LoadingSpinner from "./components/global/LoadingSpinner.vue";
+import LogoutDialog from "./components/global/LogoutDialog.vue";
+
+import { mapState } from "vuex";
 export default {
   name: "App",
   metaInfo: {
     titleTemplate: "%s | My Expense",
   },
-
-  data: () => ({
-    //
-  }),
+  components: { AlertNotification, LoadingSpinner, LogoutDialog },
+  computed: {
+    ...mapState("auth", ["isAuthenticated"]),
+  },
 };
 </script>
