@@ -19,7 +19,7 @@ export default {
   state: {
     categories: [{}],
     category: {},
-    categoryFormDialog: true,
+    categoryFormDialog: false,
     isEditing: false,
   },
   mutations: {
