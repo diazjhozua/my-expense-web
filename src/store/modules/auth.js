@@ -7,6 +7,7 @@ import {
 } from "@/shared/mutation/auth-type";
 import axios from "axios";
 import store from "@/store";
+import router from "@/router";
 
 export default {
   namespaced: true,
@@ -70,6 +71,7 @@ export default {
       commit(SET_TOKEN, null);
       commit(SET_USER, null);
       commit(SET_IS_AUTHENTICATED, false);
+      router.push("/login").catch(() => true);
     },
   },
   getters: {},

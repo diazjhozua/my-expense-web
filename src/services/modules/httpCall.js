@@ -30,16 +30,12 @@ export const api = async (method, url, body) => {
       });
     }
   } catch (error) {
-    console.log("error", error);
     let cleanMessage;
     let errorMessage = error.response.data.message;
     let statusCode = error.response.status;
 
     if (!errorMessage) {
       switch (statusCode) {
-        case 401:
-          cleanMessage = "Authorization error! Expired token please relogin";
-          break;
         case 400:
           cleanMessage = error.response.data.title
             ? error.response.data.title
@@ -52,11 +48,19 @@ export const api = async (method, url, body) => {
       cleanMessage = errorMessage;
     }
 
-    store.commit("global/setAlert", {
-      visible: true,
-      type: "error",
-      text: cleanMessage,
-    });
+    if (statusCode != 401) {
+      store.commit("global/setAlert", {
+        visible: true,
+        type: "error",
+        text: cleanMessage,
+      });
+    }
+
+    switch (statusCode) {
+      case 401:
+        store.dispatch("auth/logoutAction");
+        break;
+    }
   } finally {
     store.commit("global/setIsLoading", false);
   }
