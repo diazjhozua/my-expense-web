@@ -22,7 +22,7 @@
     </v-bottom-navigation>
 
     <v-responsive class="overflow-y-auto" max-height="600">
-      <v-responsive height="100%">
+      <v-responsive min-height="200">
         <expense-list v-if="bottomNavigation == 0"></expense-list>
         <category-list v-if="bottomNavigation == 1"></category-list>
       </v-responsive>

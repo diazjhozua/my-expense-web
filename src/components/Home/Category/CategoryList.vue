@@ -24,12 +24,32 @@
           hide-details
         ></v-text-field>
       </v-card-title>
-      <v-data-table :headers="headers" :search="search"></v-data-table>
+      <v-data-table
+        :headers="headers"
+        :search="search"
+        :items="categories || []"
+      >
+        <template v-slot:[`item.dateCreated`]="{ item }">
+          <div>{{ item.dateCreated | ddMmmmYHhSsA }}</div>
+        </template>
+        <template v-slot:[`item.limit`]="{ item }">
+          <div>{{ item.limit | toPhp }}</div>
+        </template>
+
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        </template>
+      </v-data-table>
     </v-card>
   </v-container>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+import { format, parseISO } from "date-fns";
 export default {
   data() {
     return {
@@ -38,14 +58,34 @@ export default {
         {
           text: "Category",
           align: "start",
-          filterable: false,
           value: "name",
         },
         { text: "Limit", value: "limit" },
-        { text: "Date", value: "fat" },
-        { text: "Action", value: "actions", sortable: false },
+        { text: "Date", value: "dateCreated" },
+        { text: "Actions", value: "actions", sortable: false },
       ],
     };
+  },
+  async created() {
+    await this.getCategoriesAction();
+  },
+  computed: {
+    ...mapState("category", ["categories"]),
+  },
+  methods: {
+    ...mapActions("category", ["getCategoriesAction"]),
+  },
+  filters: {
+    ddMmmmYHhSsA: function (dateTime) {
+      if (!dateTime) return "";
+      return format(parseISO(dateTime), "MMMM dd  y, hh:ss a");
+    },
+    toPhp(value) {
+      if (isNaN(value)) {
+        value = 0;
+      }
+      return `₱ ${value.toLocaleString()}`;
+    },
   },
 };
 </script>

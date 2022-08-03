@@ -1,3 +1,5 @@
+import { SET_CATEGORIES } from "@/shared/mutation/category-type";
+import { fetchCategories } from "@/services";
 export default {
   namespaced: true,
   state: {
@@ -5,14 +7,15 @@ export default {
     category: null,
   },
   mutations: {
-    setAlert(state, alertObj) {
-      state.alert = alertObj;
+    [SET_CATEGORIES](state, categories) {
+      state.categories = categories;
     },
-    closeAlert(state) {
-      state.alert.visible = false;
-    },
-    setIsLoading(state, isLoading) {
-      state.isLoading = isLoading;
+  },
+  actions: {
+    async getCategoriesAction({ commit }) {
+      const response = await fetchCategories();
+
+      commit(SET_CATEGORIES, response);
     },
   },
 };
