@@ -95,7 +95,6 @@ export default {
         } else {
           await this.addCategoryAction();
         }
-        await this.addCategoryAction();
         this.closeCategoryForm();
       } catch (error) {
         //

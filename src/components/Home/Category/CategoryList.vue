@@ -40,16 +40,20 @@
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
-          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+          <v-icon small @click="openDeleteConfirmation(item)">
+            mdi-delete
+          </v-icon>
         </template>
       </v-data-table>
     </v-card>
     <category-form></category-form>
+    <delete-dialog @deleteHandler="deleteItem"></delete-dialog>
   </v-container>
 </template>
 
 <script>
 import CategoryForm from "./CategoryForm.vue";
+import DeleteDialog from "@/components/global/DeleteDialog.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { format, parseISO } from "date-fns";
 export default {
@@ -66,10 +70,12 @@ export default {
         { text: "Date", value: "dateCreated" },
         { text: "Actions", value: "actions", sortable: false },
       ],
+      deleteId: null,
     };
   },
   components: {
     CategoryForm,
+    DeleteDialog,
   },
   async created() {
     await this.getCategoriesAction();
@@ -78,8 +84,13 @@ export default {
     ...mapState("category", ["categories"]),
   },
   methods: {
-    ...mapActions("category", ["getCategoriesAction", "getCategoryByIdAction"]),
+    ...mapActions("category", [
+      "getCategoriesAction",
+      "getCategoryByIdAction",
+      "deleteCategoryAction",
+    ]),
     ...mapMutations("category", ["openCategoryForm", "setIsEditing"]),
+    ...mapMutations("global", ["setDeleteDialog"]),
     createItem() {
       this.openCategoryForm();
       this.setIsEditing(false);
@@ -89,6 +100,28 @@ export default {
         await this.getCategoryByIdAction(item.id);
         this.openCategoryForm();
         this.setIsEditing(true);
+      } catch (error) {
+        //
+      }
+    },
+
+    openDeleteConfirmation(item) {
+      this.deleteId = item.id;
+      this.setDeleteDialog({
+        visible: true,
+        title: "Delete category confirmation",
+        message: `Are you sure you want to delete this category(${item.name})? `,
+      });
+    },
+
+    async deleteItem() {
+      try {
+        await this.deleteCategoryAction(this.deleteId);
+        this.setDeleteDialog({
+          visible: false,
+          title: "",
+          message: "",
+        });
       } catch (error) {
         //
       }

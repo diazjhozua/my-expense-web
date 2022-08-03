@@ -17,6 +17,9 @@ export const api = async (method, url, body) => {
       case "PUT":
         response = await axios.put(url, body);
         break;
+      case "DELETE":
+        response = await axios.delete(url, body);
+        break;
     }
     response = response.data;
     if (response.message) {

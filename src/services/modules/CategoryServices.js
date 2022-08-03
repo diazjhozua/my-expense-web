@@ -38,3 +38,12 @@ export const updateCategory = async (payload) => {
     throw Error(error);
   }
 };
+
+export const deleteCategory = async (id) => {
+  try {
+    await api("DELETE", `/category/${id}`, {});
+    return id;
+  } catch (error) {
+    throw Error(error);
+  }
+};

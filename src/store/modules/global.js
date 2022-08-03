@@ -8,6 +8,11 @@ export default {
       type: "info",
       text: "",
     },
+    deleteDialog: {
+      visible: false,
+      title: "",
+      message: "",
+    },
   },
   mutations: {
     setAlert(state, alertObj) {
@@ -18,6 +23,9 @@ export default {
     },
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading;
+    },
+    setDeleteDialog(state, payload) {
+      state.deleteDialog = payload;
     },
   },
 };

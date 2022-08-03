@@ -3,12 +3,14 @@ import {
   ADD_CATEGORY,
   SET_CATEGORY,
   UPDATE_CATEGORY,
+  DELETE_CATEGORY,
 } from "@/shared/mutation/category-type";
 import {
   fetchCategories,
   addCategory,
   fetchCategoryById,
   updateCategory,
+  deleteCategory,
 } from "@/services";
 import { getField, updateField } from "vuex-map-fields";
 
@@ -17,7 +19,7 @@ export default {
   state: {
     categories: [{}],
     category: {},
-    categoryFormDialog: false,
+    categoryFormDialog: true,
     isEditing: false,
   },
   mutations: {
@@ -31,8 +33,11 @@ export default {
       state.category = category;
     },
     [UPDATE_CATEGORY](state, category) {
-      const index = state.categories.findIndex((sc) => sc.id === category.id);
+      const index = state.categories.findIndex((ct) => ct.id === category.id);
       state.categories.splice(index, 1, category);
+    },
+    [DELETE_CATEGORY](state, id) {
+      state.categories = state.categories.filter((ct) => ct.id !== id);
     },
     closeCategoryForm(state) {
       state.category = {};
@@ -66,6 +71,11 @@ export default {
     async updateCategoryAction({ commit, state }) {
       const response = await updateCategory(state.category);
       commit(UPDATE_CATEGORY, response);
+    },
+
+    async deleteCategoryAction({ commit }, id) {
+      const response = await deleteCategory(id);
+      commit(DELETE_CATEGORY, response);
     },
   },
   getters: { getField },
