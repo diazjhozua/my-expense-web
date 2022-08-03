@@ -14,6 +14,9 @@ export const api = async (method, url, body) => {
       case "POST":
         response = await axios.post(url, body);
         break;
+      case "PUT":
+        response = await axios.put(url, body);
+        break;
     }
     response = response.data;
     if (response.message) {
@@ -24,6 +27,7 @@ export const api = async (method, url, body) => {
       });
     }
   } catch (error) {
+    console.log("error", error);
     let cleanMessage;
     let errorMessage = error.response.data.message;
     let statusCode = error.response.status;

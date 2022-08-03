@@ -1,16 +1,23 @@
-import { SET_CATEGORIES, ADD_CATEGORY } from "@/shared/mutation/category-type";
-import { fetchCategories, addCategory } from "@/services";
+import {
+  SET_CATEGORIES,
+  ADD_CATEGORY,
+  SET_CATEGORY,
+  UPDATE_CATEGORY,
+} from "@/shared/mutation/category-type";
+import {
+  fetchCategories,
+  addCategory,
+  fetchCategoryById,
+  updateCategory,
+} from "@/services";
 import { getField, updateField } from "vuex-map-fields";
 
 export default {
   namespaced: true,
   state: {
     categories: [{}],
-    category: {
-      name: null,
-      limit: null,
-    },
-    categoryFormDialog: true,
+    category: {},
+    categoryFormDialog: false,
     isEditing: false,
   },
   mutations: {
@@ -20,8 +27,15 @@ export default {
     [ADD_CATEGORY](state, category) {
       state.categories = [...state.categories, category];
     },
-
+    [SET_CATEGORY](state, category) {
+      state.category = category;
+    },
+    [UPDATE_CATEGORY](state, category) {
+      const index = state.categories.findIndex((sc) => sc.id === category.id);
+      state.categories.splice(index, 1, category);
+    },
     closeCategoryForm(state) {
+      state.category = {};
       state.categoryFormDialog = false;
     },
     openCategoryForm(state) {
@@ -42,6 +56,16 @@ export default {
     async addCategoryAction({ commit, state }) {
       const response = await addCategory(state.category);
       commit(ADD_CATEGORY, response);
+    },
+
+    async getCategoryByIdAction({ commit }, id) {
+      const response = await fetchCategoryById(id);
+      commit(SET_CATEGORY, response);
+    },
+
+    async updateCategoryAction({ commit, state }) {
+      const response = await updateCategory(state.category);
+      commit(UPDATE_CATEGORY, response);
     },
   },
   getters: { getField },

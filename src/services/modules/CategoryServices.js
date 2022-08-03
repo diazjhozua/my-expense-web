@@ -17,7 +17,24 @@ export const addCategory = async (payload) => {
     const response = await api("POST", `/category`, payload);
     return response.data;
   } catch (error) {
-    console.log("error", error);
+    throw Error(error);
+  }
+};
+
+export const fetchCategoryById = async (id) => {
+  try {
+    const response = await api("GET", `/category/${id}`, {});
+    return response.data;
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
+export const updateCategory = async (payload) => {
+  try {
+    const response = await api("PUT", `/category/${payload.id}`, payload);
+    return response.data;
+  } catch (error) {
     throw Error(error);
   }
 };

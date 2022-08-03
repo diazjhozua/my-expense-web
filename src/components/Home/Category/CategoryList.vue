@@ -78,11 +78,20 @@ export default {
     ...mapState("category", ["categories"]),
   },
   methods: {
-    ...mapActions("category", ["getCategoriesAction"]),
+    ...mapActions("category", ["getCategoriesAction", "getCategoryByIdAction"]),
     ...mapMutations("category", ["openCategoryForm", "setIsEditing"]),
     createItem() {
       this.openCategoryForm();
       this.setIsEditing(false);
+    },
+    async editItem(item) {
+      try {
+        await this.getCategoryByIdAction(item.id);
+        this.openCategoryForm();
+        this.setIsEditing(true);
+      } catch (error) {
+        //
+      }
     },
   },
   filters: {

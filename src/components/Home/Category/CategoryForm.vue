@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="categoryFormDialog" max-width="500px" persistent>
+  <v-dialog
+    v-model="categoryFormDialog"
+    max-width="500px"
+    @keydown.esc="closeDialogHandler"
+    @click:outside="closeDialogHandler"
+  >
     <v-card>
       <v-card-title>
         <span class="text-h5">{{ formText }}</span>
@@ -32,7 +37,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="#272727" text plain @click="closeCategoryForm">
+          <v-btn color="#272727" text plain @click="closeDialogHandler">
             Cancel
           </v-btn>
           <v-btn
@@ -65,11 +70,11 @@ export default {
     };
   },
   computed: {
-    ...mapState("category", ["categoryFormDialog", "isEditing"]),
+    ...mapState("category", ["categoryFormDialog", "isEditing", "category"]),
     ...mapFields("category", ["category.name", "category.limit"]),
 
     formText() {
-      if (this.editing) {
+      if (this.isEditing) {
         return "Edit Category";
       } else {
         return "Create Category";
@@ -78,18 +83,27 @@ export default {
   },
   methods: {
     ...mapMutations("category", ["closeCategoryForm"]),
-    ...mapActions("category", ["addCategoryAction"]),
+    ...mapActions("category", ["addCategoryAction", "updateCategoryAction"]),
     async submitFormHandler() {
       if (!this.$refs.form.validate()) {
         return;
       }
 
       try {
+        if (this.isEditing) {
+          await this.updateCategoryAction();
+        } else {
+          await this.addCategoryAction();
+        }
         await this.addCategoryAction();
         this.closeCategoryForm();
       } catch (error) {
         //
       }
+    },
+    closeDialogHandler() {
+      this.$refs.form.reset();
+      this.closeCategoryForm();
     },
   },
 };
