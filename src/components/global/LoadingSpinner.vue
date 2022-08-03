@@ -19,7 +19,7 @@ export default {
 
 <style scoped>
 .spinner {
-  z-index: 100;
+  z-index: 11111;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.2);

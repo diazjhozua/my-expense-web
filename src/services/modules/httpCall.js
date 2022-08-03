@@ -14,6 +14,12 @@ export const api = async (method, url, body) => {
       case "POST":
         response = await axios.post(url, body);
         break;
+      case "PUT":
+        response = await axios.put(url, body);
+        break;
+      case "DELETE":
+        response = await axios.delete(url, body);
+        break;
     }
     response = response.data;
     if (response.message) {
@@ -30,9 +36,6 @@ export const api = async (method, url, body) => {
 
     if (!errorMessage) {
       switch (statusCode) {
-        case 401:
-          cleanMessage = "Authorization error! Expired token please relogin";
-          break;
         case 400:
           cleanMessage = error.response.data.title
             ? error.response.data.title
@@ -45,11 +48,19 @@ export const api = async (method, url, body) => {
       cleanMessage = errorMessage;
     }
 
-    store.commit("global/setAlert", {
-      visible: true,
-      type: "error",
-      text: cleanMessage,
-    });
+    if (statusCode != 401) {
+      store.commit("global/setAlert", {
+        visible: true,
+        type: "error",
+        text: cleanMessage,
+      });
+    }
+
+    switch (statusCode) {
+      case 401:
+        store.dispatch("auth/logoutAction");
+        break;
+    }
   } finally {
     store.commit("global/setIsLoading", false);
   }
