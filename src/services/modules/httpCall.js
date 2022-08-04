@@ -21,6 +21,7 @@ export const api = async (method, url, body) => {
         response = await axios.delete(url, body);
         break;
     }
+
     response = response.data;
     if (response.message) {
       store.commit("global/setAlert", {

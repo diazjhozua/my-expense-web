@@ -70,7 +70,7 @@ export default {
     return {
       passwordShow: "",
       loginForm: {
-        email: "sample@gmail2.com",
+        email: "sample@gmail2x.com",
         password: "motmot123",
       },
       rules: {

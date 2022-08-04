@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      bottomNavigation: 1,
+      bottomNavigation: 0,
     };
   },
 };
