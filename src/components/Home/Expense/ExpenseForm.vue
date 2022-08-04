@@ -109,6 +109,14 @@
                 type="number"
               ></v-text-field
             ></v-col>
+            <v-col cols="12">
+              <v-textarea
+                rows="4"
+                v-model="description"
+                outlined
+                label="Description"
+              ></v-textarea>
+            </v-col>
           </v-row>
         </v-container>
 
@@ -169,6 +177,7 @@ export default {
       "expense.cost",
       "expense.categoryId",
       "expense.date",
+      "expense.description",
     ]),
 
     formText() {

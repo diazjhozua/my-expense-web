@@ -70,8 +70,8 @@ export default {
     return {
       passwordShow: "",
       loginForm: {
-        email: "sample@gmail2x.com",
-        password: "motmot123",
+        email: "sample@gmail.com",
+        password: "sample123",
       },
       rules: {
         required: (value) => !!value || "Required",
