@@ -22,17 +22,13 @@
           hide-details
         ></v-text-field>
       </v-card-title>
-      <v-data-table
-        :headers="headers"
-        :search="search"
-        :items="categories || []"
-      >
-        <!-- <template v-slot:[`item.dateCreated`]="{ item }">
-          <div>{{ item.dateCreated | ddMmmmYHhSsA }}</div>
+      <v-data-table :headers="headers" :search="search" :items="expenses || []">
+        <template v-slot:[`item.date`]="{ item }">
+          <div>{{ item.date | ddMmmmY }}</div>
         </template>
-        <template v-slot:[`item.limit`]="{ item }">
-          <div>{{ item.limit | toPhp }}</div>
-        </template> -->
+        <template v-slot:[`item.cost`]="{ item }">
+          <div>{{ item.cost | toPhp }}</div>
+        </template>
 
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
@@ -48,7 +44,91 @@
 </template>
 
 <script>
-export default {};
+import { mapState, mapActions, mapMutations } from "vuex";
+import { format, parseISO } from "date-fns";
+export default {
+  data() {
+    return {
+      search: "",
+      headers: [
+        {
+          text: "Expense",
+          align: "start",
+          value: "name",
+        },
+        { text: "Cost", value: "cost" },
+        { text: "Type", value: "type" },
+        { text: "Category", value: "category.name" },
+        { text: "Description", value: "description" },
+        { text: "Date", value: "date" },
+        { text: "Actions", value: "actions", sortable: false },
+      ],
+      deleteId: null,
+    };
+  },
+  async created() {
+    await this.getExpensesAction();
+  },
+  computed: {
+    ...mapState("expense", ["expenses"]),
+  },
+  methods: {
+    ...mapActions("expense", [
+      "getExpensesAction",
+      "createExpenseAction",
+      "getExpenseByIdAction",
+      "deleteExpenseAction",
+    ]),
+    ...mapMutations("expense", ["openCategoryForm", "setIsEditing"]),
+    ...mapMutations("global", ["setDeleteDialog"]),
+    createItem() {
+      this.openCategoryForm();
+      this.setIsEditing(false);
+    },
+    async editItem(item) {
+      try {
+        await this.getCategoryByIdAction(item.id);
+        this.openCategoryForm();
+        this.setIsEditing(true);
+      } catch (error) {
+        //
+      }
+    },
+    openDeleteConfirmation(item) {
+      this.deleteId = item.id;
+      this.setDeleteDialog({
+        visible: true,
+        title: "Delete category confirmation",
+        message: `Are you sure you want to delete this category(${item.name})? `,
+      });
+    },
+
+    async deleteItem() {
+      try {
+        await this.deleteCategoryAction(this.deleteId);
+        this.setDeleteDialog({
+          visible: false,
+          title: "",
+          message: "",
+        });
+      } catch (error) {
+        //
+      }
+    },
+  },
+  filters: {
+    ddMmmmY: function (dateTime) {
+      if (!dateTime) return "";
+      return format(parseISO(dateTime), "MMMM dd,  y");
+    },
+    toPhp(value) {
+      if (isNaN(value)) {
+        value = 0;
+      }
+      return `₱ ${value.toLocaleString()}`;
+    },
+  },
+};
 </script>
 
 <style scoped></style>

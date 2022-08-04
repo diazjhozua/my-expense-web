@@ -89,7 +89,7 @@ export default {
       commit(UPDATE_EXPENSE, response);
     },
 
-    async deleteCategoryAction({ commit }, id) {
+    async deleteExpenseAction({ commit }, id) {
       const response = await deleteExpense(id);
       commit(DELETE_EXPENSE, response);
     },

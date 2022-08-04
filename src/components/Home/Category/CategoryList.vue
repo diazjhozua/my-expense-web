@@ -67,7 +67,7 @@ export default {
           value: "name",
         },
         { text: "Limit", value: "limit" },
-        { text: "Date", value: "dateCreated" },
+        { text: "Date Created", value: "dateCreated" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       deleteId: null,
@@ -104,7 +104,6 @@ export default {
         //
       }
     },
-
     openDeleteConfirmation(item) {
       this.deleteId = item.id;
       this.setDeleteDialog({
