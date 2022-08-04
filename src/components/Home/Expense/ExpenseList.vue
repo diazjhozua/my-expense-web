@@ -119,7 +119,7 @@ export default {
 
     async deleteItem() {
       try {
-        await this.deleteCategoryAction(this.deleteId);
+        await this.deleteExpenseAction(this.deleteId);
         this.setDeleteDialog({
           visible: false,
           title: "",

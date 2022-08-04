@@ -21,7 +21,7 @@ export const api = async (method, url, body) => {
         response = await axios.delete(url, body);
         break;
     }
-    console.log("response", response);
+
     response = response.data;
     if (response.message) {
       store.commit("global/setAlert", {
@@ -31,7 +31,6 @@ export const api = async (method, url, body) => {
       });
     }
   } catch (error) {
-    console.log("error", error);
     let cleanMessage;
     let errorMessage = error.response.data.message;
     let statusCode = error.response.status;
