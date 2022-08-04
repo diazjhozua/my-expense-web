@@ -23,6 +23,9 @@
         ></v-text-field>
       </v-card-title>
       <v-data-table :headers="headers" :search="search" :items="expenses || []">
+        <template v-slot:[`item.type`]="{ item }">
+          <div>{{ item.type | splitCamelCase }}</div>
+        </template>
         <template v-slot:[`item.date`]="{ item }">
           <div>{{ item.date | ddMmmmY }}</div>
         </template>
@@ -87,19 +90,19 @@ export default {
       "getExpenseByIdAction",
       "deleteExpenseAction",
     ]),
-    ...mapMutations("expense", ["openCategoryForm", "setIsEditing"]),
+    ...mapMutations("expense", ["openExpenseForm", "setIsEditing"]),
     ...mapMutations("global", ["setDeleteDialog"]),
     async createItem() {
       await this.createExpenseAction();
-      this.openCategoryForm();
+      this.openExpenseForm();
 
       this.setIsEditing(false);
     },
     async editItem(item) {
       try {
-        await this.getCategoryByIdAction(item.id);
+        await this.getExpenseByIdAction(item.id);
         await this.createExpenseAction();
-        this.openCategoryForm();
+        this.openExpenseForm();
         this.setIsEditing(true);
       } catch (error) {
         //
@@ -137,6 +140,10 @@ export default {
         value = 0;
       }
       return `₱ ${value.toLocaleString()}`;
+    },
+    splitCamelCase: function (value) {
+      if (!value) return "";
+      return value.replace(/([a-z])([A-Z])/g, "$1 $2");
     },
   },
 };

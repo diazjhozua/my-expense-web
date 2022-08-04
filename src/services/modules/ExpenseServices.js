@@ -37,6 +37,7 @@ export const addExpense = async (payload) => {
 export const fetchExpenseById = async (id) => {
   try {
     const response = await api("GET", `/expense/${id}`, {});
+    response.data.categoryId = response.data.category.id;
     return response.data;
   } catch (error) {
     throw Error(error);

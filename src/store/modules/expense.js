@@ -54,7 +54,7 @@ export default {
       state.expense = {};
       state.expenseFormDialog = false;
     },
-    openCategoryForm(state) {
+    openExpenseForm(state) {
       state.expenseFormDialog = true;
     },
     setIsEditing(state, isEditing) {

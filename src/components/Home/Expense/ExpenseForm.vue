@@ -133,7 +133,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 import { mapFields } from "vuex-map-fields";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 export default {
   data() {
     return {
@@ -145,9 +145,14 @@ export default {
         minValue1: (value) =>
           (value && value > 0) || "Value must not be less than or equal to 0",
       },
-      returnDate: format(new Date(), "y-MM-dd"),
+      returnDate: "",
       menu2: false,
     };
+  },
+  created() {
+    if (!this.isEditing) {
+      this.returnDate = format(new Date(), "y-MM-dd");
+    }
   },
 
   computed: {
@@ -184,11 +189,11 @@ export default {
 
       try {
         if (this.isEditing) {
-          await this.updateCategoryAction();
+          await this.updateExpenseAction();
         } else {
-          await this.addCategoryAction();
+          await this.addExpenseAction();
         }
-        this.closeCategoryForm();
+        this.closeExpenseForm();
       } catch (error) {
         //
       }
@@ -206,6 +211,15 @@ export default {
   watch: {
     returnDate(newVal) {
       this.date = newVal;
+    },
+    date(newVal) {
+      if (newVal) {
+        try {
+          this.returnDate = format(parseISO(this.date), "y-MM-dd");
+        } catch (error) {
+          this.returnDate = format(new Date(), "y-MM-dd");
+        }
+      }
     },
   },
 };
