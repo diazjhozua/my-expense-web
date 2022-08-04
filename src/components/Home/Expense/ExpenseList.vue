@@ -4,7 +4,7 @@
       <h1 class="text-h5">Expenses</h1>
       <v-spacer></v-spacer>
       <v-btn @click="createItem" class="white--text mb-3 px-10" color="#272727"
-        >Create <v-icon class="ml-3">mdi-clipboard-plus</v-icon></v-btn
+        >Record <v-icon class="ml-3">mdi-clipboard-plus</v-icon></v-btn
       >
     </header>
 
@@ -40,10 +40,14 @@
         </template>
       </v-data-table>
     </v-card>
+    <expense-form></expense-form>
+    <delete-dialog @deleteHandler="deleteItem"></delete-dialog>
   </v-container>
 </template>
 
 <script>
+import ExpenseForm from "./ExpenseForm.vue";
+import DeleteDialog from "@/components/global/DeleteDialog.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { format, parseISO } from "date-fns";
 export default {
@@ -66,6 +70,10 @@ export default {
       deleteId: null,
     };
   },
+  components: {
+    ExpenseForm,
+    DeleteDialog,
+  },
   async created() {
     await this.getExpensesAction();
   },
@@ -81,13 +89,16 @@ export default {
     ]),
     ...mapMutations("expense", ["openCategoryForm", "setIsEditing"]),
     ...mapMutations("global", ["setDeleteDialog"]),
-    createItem() {
+    async createItem() {
+      await this.createExpenseAction();
       this.openCategoryForm();
+
       this.setIsEditing(false);
     },
     async editItem(item) {
       try {
         await this.getCategoryByIdAction(item.id);
+        await this.createExpenseAction();
         this.openCategoryForm();
         this.setIsEditing(true);
       } catch (error) {

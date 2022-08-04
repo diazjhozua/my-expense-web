@@ -23,7 +23,7 @@ export default {
   state: {
     expenses: [{}],
     expense: {},
-    expenseTypes: [{}],
+    expenseTypes: [],
     categories: [{}],
     expenseFormDialog: false,
     isEditing: false,
@@ -33,9 +33,9 @@ export default {
     [SET_EXPENSES](state, expenses) {
       state.expenses = expenses;
     },
-    [CREATE_EXPENSE](state, categories, expenseTypes) {
+    [CREATE_EXPENSE](state, { categories, types }) {
       state.categories = categories;
-      state.expenseTypes = expenseTypes;
+      state.expenseTypes = types;
     },
     [ADD_EXPENSE](state, expense) {
       state.expenses = [...state.expenses, expense];
@@ -43,7 +43,6 @@ export default {
     [SET_EXPENSE](state, expense) {
       state.expense = expense;
     },
-
     [UPDATE_EXPENSE](state, expense) {
       const index = state.expenses.findIndex((exp) => exp.id === expense.id);
       state.expenses.splice(index, 1, expense);
@@ -71,7 +70,10 @@ export default {
 
     async createExpenseAction({ commit }) {
       const response = await createExpense();
-      commit(CREATE_EXPENSE, response.categories, response.types);
+      commit(CREATE_EXPENSE, {
+        categories: [...response.categories],
+        types: response.types,
+      });
     },
 
     async addExpenseAction({ commit, state }) {
