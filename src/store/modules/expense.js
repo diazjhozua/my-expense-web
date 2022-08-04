@@ -38,7 +38,7 @@ export default {
       state.expenseTypes = types;
     },
     [ADD_EXPENSE](state, expense) {
-      state.expenses = [...state.expenses, expense];
+      state.expenses = [expense, ...state.expenses];
     },
     [SET_EXPENSE](state, expense) {
       state.expense = expense;
