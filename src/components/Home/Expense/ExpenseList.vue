@@ -139,7 +139,7 @@ export default {
       if (isNaN(value)) {
         value = 0;
       }
-      return `₱ ${value.toLocaleString()}`;
+      return `₱${value.toLocaleString()}`;
     },
     splitCamelCase: function (value) {
       if (!value) return "";
