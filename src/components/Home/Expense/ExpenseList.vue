@@ -8,11 +8,49 @@
       >
     </header>
 
+    <v-row class="mt-4">
+      <v-col cols="12" md="4" sm="4">
+        <v-card shaped outlined class="py-3 px-3" elevation="3">
+          <div class="d-flex justify-space-between">
+            <v-icon x-large>mdi-calendar</v-icon>
+            <div>
+              <v-card-title>{{ expensesThisDay | toPhp }}</v-card-title>
+              <v-card-subtitle>Total expense this day</v-card-subtitle>
+            </div>
+          </div>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="4" sm="4">
+        <v-card shaped outlined class="py-3 px-3" elevation="3">
+          <div class="d-flex justify-space-between">
+            <v-icon x-large>mdi-calendar-month</v-icon>
+            <div>
+              <v-card-title>{{ expensesThisMonth | toPhp }}</v-card-title>
+              <v-card-subtitle>Total expense this month</v-card-subtitle>
+            </div>
+          </div>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="4" sm="4">
+        <v-card shaped outlined class="py-3 px-3" elevation="3">
+          <div class="d-flex justify-space-between">
+            <v-icon x-large>mdi-calendar-blank-multiple</v-icon>
+            <div>
+              <v-card-title>{{ expensesThisYear | toPhp }}</v-card-title>
+              <v-card-subtitle>Total expense this year</v-card-subtitle>
+            </div>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+
     <p class="text-subtitle-1 mt-4">
       These are the list of expenses in your account.
     </p>
 
-    <v-card>
+    <v-card class="mb-15">
       <v-card-title>
         <v-text-field
           v-model="search"
@@ -51,7 +89,7 @@
 <script>
 import ExpenseForm from "./ExpenseForm.vue";
 import DeleteDialog from "@/components/global/DeleteDialog.vue";
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 import { format, parseISO } from "date-fns";
 export default {
   data() {
@@ -82,6 +120,11 @@ export default {
   },
   computed: {
     ...mapState("expense", ["expenses"]),
+    ...mapGetters("expense", [
+      "expensesThisDay",
+      "expensesThisMonth",
+      "expensesThisYear",
+    ]),
   },
   methods: {
     ...mapActions("expense", [

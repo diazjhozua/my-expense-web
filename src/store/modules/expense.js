@@ -96,5 +96,44 @@ export default {
       commit(DELETE_EXPENSE, response);
     },
   },
-  getters: { getField },
+  getters: {
+    expensesThisDay: (state) => {
+      return state.expenses.reduce(function (accum, expense) {
+        let now = new Date();
+        let check = new Date(expense.date);
+        if (
+          check.getFullYear() == now.getFullYear() &&
+          check.getMonth() == now.getMonth() &&
+          check.getDate() == now.getDate()
+        ) {
+          return accum + expense.cost;
+        }
+        return accum;
+      }, 0);
+    },
+    expensesThisMonth: (state) => {
+      return state.expenses.reduce(function (accum, expense) {
+        let now = new Date();
+        let check = new Date(expense.date);
+        if (
+          check.getFullYear() == now.getFullYear() &&
+          check.getMonth() == now.getMonth()
+        ) {
+          return accum + expense.cost;
+        }
+        return accum;
+      }, 0);
+    },
+    expensesThisYear: (state) => {
+      return state.expenses.reduce(function (accum, expense) {
+        let now = new Date();
+        let check = new Date(expense.date);
+        if (check.getFullYear() == now.getFullYear()) {
+          return accum + expense.cost;
+        }
+        return accum;
+      }, 0);
+    },
+    getField,
+  },
 };
