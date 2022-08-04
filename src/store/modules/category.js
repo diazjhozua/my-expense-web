@@ -54,7 +54,6 @@ export default {
   actions: {
     async getCategoriesAction({ commit }) {
       const response = await fetchCategories();
-
       commit(SET_CATEGORIES, response);
     },
 
