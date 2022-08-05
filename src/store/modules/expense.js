@@ -18,6 +18,8 @@ import {
 
 import { getField, updateField } from "vuex-map-fields";
 
+import { cloneDeep } from "lodash";
+
 export default {
   namespaced: true,
   state: {
@@ -97,6 +99,10 @@ export default {
     },
   },
   getters: {
+    latestExpenses: (state) => {
+      let cloneExpense = cloneDeep(state.expenses);
+      return cloneExpense.splice(0, 4);
+    },
     expensesThisDay: (state) => {
       return state.expenses.reduce(function (accum, expense) {
         let now = new Date();
