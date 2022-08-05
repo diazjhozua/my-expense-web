@@ -30,7 +30,6 @@ export default {
     expenseFormDialog: false,
     isEditing: false,
   },
-
   mutations: {
     [SET_EXPENSES](state, expenses) {
       state.expenses = expenses;
