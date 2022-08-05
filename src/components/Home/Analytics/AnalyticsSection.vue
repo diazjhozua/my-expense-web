@@ -8,7 +8,7 @@
       !
     </header>
 
-    <section class="mt-4">
+    <section class="mt-4 mb-15">
       <v-row>
         <v-col cols="12" sm="5">
           <v-card class="px-2 pb-5" style="height: 100%">

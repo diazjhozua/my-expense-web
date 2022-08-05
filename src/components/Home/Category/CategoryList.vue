@@ -14,7 +14,7 @@
       add any categories you want.
     </p>
 
-    <v-card>
+    <v-card class="mb-15">
       <v-card-title>
         <v-text-field
           v-model="search"
