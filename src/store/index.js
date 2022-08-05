@@ -4,6 +4,7 @@ import global from "@/store/modules/global";
 import auth from "@/store/modules/auth";
 import category from "@/store/modules/category";
 import expense from "@/store/modules/expense";
+import analytics from "@/store/modules/analytics";
 
 Vue.use(Vuex);
 
@@ -14,5 +15,6 @@ export default new Vuex.Store({
     auth,
     category,
     expense,
+    analytics,
   },
 });

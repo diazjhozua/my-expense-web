@@ -31,7 +31,7 @@
               <v-btn
                 :loading="isLoading"
                 :disabled="isLoading"
-                color="#B61228"
+                color="#272727"
                 class="px-5 white--text"
                 @click="signOutHandler"
               >
