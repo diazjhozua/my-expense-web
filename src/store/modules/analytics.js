@@ -13,8 +13,8 @@ import {
 export default {
   namespaced: true,
   state: {
-    averageExpense: [{}],
-    categorySummaryThisMonth: [{}],
+    averageExpense: [],
+    categorySummaryThisMonth: [],
     budgetLimitThisMonth: {},
   },
 
@@ -43,6 +43,80 @@ export default {
     async getCategorySummaryThisMonthAction({ commit }) {
       const response = await fetchExpenseCategorySummaryThisMonth();
       commit(SET_CATEGORY_SUMMARY, response);
+    },
+  },
+  getters: {
+    averageExpenseChartData: (state) => {
+      let chartData = {
+        labels: [],
+        datasets: [
+          {
+            backgroundColor: "#455A64",
+            data: [],
+            label: "Average Expense",
+          },
+        ],
+      };
+
+      for (let i = 0; i < state.averageExpense.length; i++) {
+        chartData.labels.push(state.averageExpense[i].month);
+        chartData.datasets[0].data.push(state.averageExpense[i].total);
+      }
+
+      return chartData;
+    },
+    budgetLimitChartData: (state) => {
+      let chartData = {
+        labels: ["Expenses Made", "Available Budget"],
+        datasets: [
+          {
+            label: "Percentage:",
+            data: [],
+            backgroundColor: ["#455A64", "#BDBDBD"],
+            hoverOffset: 4,
+          },
+        ],
+      };
+
+      chartData.datasets[0].data.push(state.budgetLimitThisMonth.totalExpense);
+      chartData.datasets[0].data.push(
+        state.budgetLimitThisMonth.totalLimit -
+          state.budgetLimitThisMonth.totalExpense
+      );
+
+      return chartData;
+    },
+    categorySummaryChartData: (state) => {
+      let chartData = {
+        labels: [],
+        datasets: [
+          {
+            backgroundColor: "#BDBDBD",
+            data: [],
+            label: "Limit",
+            fill: false,
+          },
+          {
+            backgroundColor: "#455A64",
+            data: [],
+            label: "Expenses",
+            fill: false,
+          },
+        ],
+      };
+
+      for (let i = 0; i < state.categorySummaryThisMonth.length; i++) {
+        chartData.labels.push(state.categorySummaryThisMonth[i].category);
+        chartData.datasets[0].data.push(
+          state.categorySummaryThisMonth[i].limit
+        );
+
+        chartData.datasets[1].data.push(
+          state.categorySummaryThisMonth[i].expensesMade
+        );
+      }
+
+      return chartData;
     },
   },
 };
