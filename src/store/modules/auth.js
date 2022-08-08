@@ -67,11 +67,12 @@ export default {
         .keys()
         .forEach((cookie) => window.$cookies.remove(cookie));
 
+      router.push("/login").catch(() => true);
+
       axios.defaults.headers.common["Authorization"] = null;
       commit(SET_TOKEN, null);
       commit(SET_USER, null);
       commit(SET_IS_AUTHENTICATED, false);
-      router.push("/login").catch(() => true);
     },
   },
   getters: {},

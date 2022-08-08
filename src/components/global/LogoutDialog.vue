@@ -70,8 +70,6 @@ export default {
         type: "success",
         text: "Logout success",
       });
-
-      this.$router.push("/login");
     },
   },
   watch: {
