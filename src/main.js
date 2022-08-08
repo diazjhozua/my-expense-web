@@ -14,10 +14,7 @@ Vue.use(VueCookies);
 
 Vue.use(VueMeta);
 
-axios.interceptors.request.use(function (config) {
-  config.baseURL = API;
-  return config;
-});
+axios.defaults.baseURL = API;
 
 store.dispatch("auth/attemptAction", window.$cookies.get("token")).then(() => {
   new Vue({

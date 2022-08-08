@@ -1,6 +1,4 @@
 import HomeView from "../views/HomeView.vue";
-import LoginView from "@/views/Auth/LoginView";
-import RegisterView from "@/views/Auth/RegisterView";
 
 export default [
   {
@@ -14,11 +12,11 @@ export default [
   {
     path: "/login",
     name: "login",
-    component: LoginView,
+    component: () => import("../views/Auth/LoginView.vue"),
   },
   {
     path: "/register",
     name: "register",
-    component: RegisterView,
+    component: () => import("../views/Auth/RegisterView.vue"),
   },
 ];
