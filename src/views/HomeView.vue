@@ -26,7 +26,7 @@
       <v-spacer></v-spacer>
     </v-bottom-navigation>
 
-    <v-responsive class="overflow-y-auto" max-height="600">
+    <v-responsive class="overflow-y-auto" style="height: 90vh">
       <v-responsive min-height="200">
         <analytics-section v-if="bottomNavigation == 0"></analytics-section>
         <expense-list v-if="bottomNavigation == 1"></expense-list>
