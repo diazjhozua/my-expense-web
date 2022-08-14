@@ -49,7 +49,7 @@ export const api = async (method, url, body) => {
       cleanMessage = errorMessage;
     }
 
-    if (statusCode != 401) {
+    if (cleanMessage) {
       store.commit("global/setAlert", {
         visible: true,
         type: "error",
