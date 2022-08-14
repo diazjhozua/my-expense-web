@@ -49,11 +49,13 @@ export const api = async (method, url, body) => {
       cleanMessage = errorMessage;
     }
 
-    store.commit("global/setAlert", {
-      visible: true,
-      type: "error",
-      text: cleanMessage,
-    });
+    if (cleanMessage) {
+      store.commit("global/setAlert", {
+        visible: true,
+        type: "error",
+        text: cleanMessage,
+      });
+    }
 
     switch (statusCode) {
       case 401:
